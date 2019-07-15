@@ -21,7 +21,8 @@ namespace HeroesAPI.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=TourOfHeroes;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=TourOfHeroes;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=localhost\\LOCALDB2014;Database=TourOfHeroes;Trusted_Connection=True;");
             }
         }
 

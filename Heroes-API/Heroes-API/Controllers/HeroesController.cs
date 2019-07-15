@@ -12,20 +12,17 @@ namespace HeroesAPI.Controllers
     [ApiController]
     public class HeroesController : ControllerBase
     {
-        // GET api/heroes
         [HttpGet]
         public ActionResult<IEnumerable<Hero>> GetHeroes()
         {
             using (var db = new TourOfHeroesContext())
             {
                 //  Return all Heroes
-                return db.Hero;
+                return db.Hero.ToList();
             }
         }
 
-        // GET api/heroes/5
         [HttpGet("{id}")]
-        //[Route("api/heroes/getHero/{id}")]
         public ActionResult<Hero> GetHero(int id)
         {
             using (var db = new TourOfHeroesContext())
@@ -37,9 +34,20 @@ namespace HeroesAPI.Controllers
             }
         }
 
-        // POST api/heroes
+        [HttpGet("search/{term}")]
+        public ActionResult<IEnumerable<Hero>> SearchHeroes(string term)
+        {
+            using (var db = new TourOfHeroesContext())
+            {
+                //  Search for Heroes matching Term
+                return db.Hero
+                         .Where(x => x.Name.Contains(term))
+                         .ToList();
+            }
+        }
+
         [HttpPost]
-        [Route("api/heroes/saveHero")]
+        [Route("saveHero")]
         public ActionResult<Hero> SaveHero([FromBody] Hero hero)
         {
             using (var db = new TourOfHeroesContext())
@@ -55,22 +63,17 @@ namespace HeroesAPI.Controllers
             }
         }
 
-        // DELETE api/values/5
-        //[HttpDelete("{id}")]
         [HttpPost]
-        [Route("api/heroes/deleteHero")]
+        [Route("deleteHero")]
         //public void DeleteHero(int id)
         public void DeleteHero([FromBody] Hero hero)  
         {
             using (var db = new TourOfHeroesContext())
             {
-                ////  
-                //var hero = db.Hero.Where(x => x.Id == id)
-                //                  .FirstOrDefault();
-
                 db.Hero.Remove(hero);
-            }
 
+                db.SaveChanges();
+            }
         }
     }
 }
